@@ -16,7 +16,7 @@ void set3DViewingInformation(double xyz[6])
 	double zmid = 0.5 * (xyz[4] + xyz[5]);
 	cryph::AffPoint center(0, 0, 300.0);
 
-	cryph::AffPoint eye(25.0, 5.0, -10.0);
+	cryph::AffPoint eye(0.0, 20.0, -50.0);
 
 	cryph::AffVector up = cryph::AffVector::yu;
 
@@ -34,7 +34,7 @@ void set3DViewingInformation(double xyz[6])
 
 int main(int argc, char* argv[])
 {
-	GLFWController c("GIVE ME A NICE TITLE", MVC_USE_DEPTH_BIT);
+	GLFWController c("Bowling Lane Mock-up", MVC_USE_DEPTH_BIT);
 	c.reportVersions(std::cout);
 
 	GutterModelView::initBaseCoordinates();
@@ -42,7 +42,6 @@ int main(int argc, char* argv[])
 
 	// create your scene, adding things to the Controller....
 	c.addModel(new LaneModelView(0,0,0));
-	c.addModel(new GutterModelView(19.5 + 4.625, 1.0, 0));
 
 	glClearColor(0, 0, .6, 1.0);
 

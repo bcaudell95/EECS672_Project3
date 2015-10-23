@@ -11,6 +11,8 @@ vec3 LaneModelView::ka = {.1, .1, .1};
 
 LaneModelView::LaneModelView(float cx, float cy, float cz)
 {
+	origin[0] = cx; origin[1] = cy; origin[2] = cz;
+
 	blocks.reserve(numberOfBlocks);
 	float yMax = size[1];
 	float zMax = size[2];
@@ -36,6 +38,10 @@ LaneModelView::LaneModelView(float cx, float cy, float cz)
 
 	//add the pins
 	pins = new TenPinsModelView(cx, cy + 1.0, cz + 722.5);
+
+	//add gutters
+	gutters[0] = new GutterModelView(cx - size[0]/2.0 - GutterModelView::r, cy+1, cz);
+	gutters[1] = new GutterModelView(cx + size[0]/2.0 + GutterModelView::r, cy+1, cz);
 }
 
 LaneModelView::~LaneModelView()
@@ -52,14 +58,16 @@ void LaneModelView::render()
 		blocks.at(i)->render();
 	}
 	pins->render();
+	gutters[0]->render();
+	gutters[1]->render();
 }
 
 void LaneModelView::getMCBoundingBox(double* xyzLimits) const
 {
-	xyzLimits[0] = 0.0;
-	xyzLimits[1] = 0.0;
-	xyzLimits[2] = 0.0;
-	xyzLimits[3] = size[0];
-	xyzLimits[4] = size[1];
-	xyzLimits[5] = size[2];
+	xyzLimits[0] = origin[0] - size[0]/2.0;
+	xyzLimits[1] = origin[1];
+	xyzLimits[2] = origin[2];
+	xyzLimits[3] = origin[0] + size[0]/2.0;
+	xyzLimits[4] = origin[1] + size[1];
+	xyzLimits[5] = origin[2] + size[2];
 }
