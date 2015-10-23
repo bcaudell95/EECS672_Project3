@@ -6,7 +6,7 @@ LINK = g++ -fPIC -g
 LOCAL_UTIL_LIBRARIES = ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/libmvc.so
 OGL_LIBRARIES = -lglfw -lGLU -lGL
 
-OBJS = project2.o ModelViewWithPhongLighting.o TEMPLATE_Subclass.o LaneModelView.o ModelView_Additions.o MandM.o Block.o PinModelView.o TenPinsModelView.o GutterModelView.o
+OBJS = project2.o ModelViewWithPhongLighting.o SmallCappingModelView.o LaneModelView.o ModelView_Additions.o MandM.o Block.o PinModelView.o TenPinsModelView.o GutterModelView.o BigCappingModelView.o PairModelView.o
 
 project2: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
 	$(LINK) -o project2 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
@@ -29,8 +29,6 @@ ModelView_Additions.o: ModelView_Additions.c++
 	$(CPP) $(C_FLAGS) ModelView_Additions.c++
 ModelViewWithPhongLighting.o: ModelViewWithPhongLighting.h ModelViewWithPhongLighting.c++
 	$(CPP) $(C_FLAGS) ModelViewWithPhongLighting.c++
-TEMPLATE_Subclass.o: TEMPLATE_Subclass.h TEMPLATE_Subclass.c++
-	$(CPP) $(C_FLAGS) TEMPLATE_Subclass.c++
 Block.o: Block.h Block.c++
 	$(CPP) $(C_FLAGS) Block.c++
 LaneModelView.o: LaneModelView.h LaneModelView.c++
@@ -43,3 +41,9 @@ TenPinsModelView.o: TenPinsModelView.h TenPinsModelView.c++
 	$(CPP) $(C_FLAGS) TenPinsModelView.c++
 GutterModelView.o: GutterModelView.h GutterModelView.c++
 	$(CPP) $(C_FLAGS) GutterModelView.c++
+SmallCappingModelView.o: SmallCappingModelView.h SmallCappingModelView.c++
+	$(CPP) $(C_FLAGS) SmallCappingModelView.c++
+BigCappingModelView.o: BigCappingModelView.h BigCappingModelView.c++
+	$(CPP) $(C_FLAGS) BigCappingModelView.c++
+PairModelView.o: PairModelView.h PairModelView.c++
+	$(CPP) $(C_FLAGS) PairModelView.c++

@@ -29,7 +29,7 @@ float PinModelView::diameterByHeight[]
 		1.9, 2.0,			// 11in
 		2.1, 2.3,			// 12in
 		2.45, 2.2,		// 13in
-		1.8, 1.4,			// 14in
+		1.9, 1.4,			// 14in
 		0							// 15in
 	};
 

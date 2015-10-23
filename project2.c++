@@ -1,11 +1,7 @@
 // project2.c++: Starter for EECS 672 Project 2
 
 #include "GLFWController.h"
-#include "TEMPLATE_Subclass.h"
-#include "LaneModelView.h"
-#include "MandM.h"
-#include "TenPinsModelView.h"
-#include "GutterModelView.h"
+#include "PairModelView.h"
 
 void set3DViewingInformation(double xyz[6])
 {
@@ -14,9 +10,10 @@ void set3DViewingInformation(double xyz[6])
 	double xmid = 0.5 * (xyz[0] + xyz[1]);
 	double ymid = 0.5 * (xyz[2] + xyz[3]);
 	double zmid = 0.5 * (xyz[4] + xyz[5]);
-	cryph::AffPoint center(0, 0, 300.0);
+	const float cx = -2.5*129.0;
+	cryph::AffPoint center(cx, 0, 300.0);
 
-	cryph::AffPoint eye(0.0, 20.0, -50.0);
+	cryph::AffPoint eye(cx, 50.0, -80.0);
 
 	cryph::AffVector up = cryph::AffVector::yu;
 
@@ -41,7 +38,11 @@ int main(int argc, char* argv[])
 	GutterModelView::initNormals();
 
 	// create your scene, adding things to the Controller....
-	c.addModel(new LaneModelView(0,0,0));
+	const float pairWidthWithoutLeftCapping = 129.0;
+	for(int pair=0;pair<6;pair++){
+		c.addModel(new PairModelView(-pair*pairWidthWithoutLeftCapping, 0, 0, pair==0));
+	}
+	c.addModel(new PinModelView(-2.5*129.0, 50, -50));
 
 	glClearColor(0, 0, .6, 1.0);
 
