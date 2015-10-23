@@ -4,12 +4,13 @@
 #define LANE_MODELVIEW_H
 
 #include "Block.h"
+#include "TenPinsModelView.h"
 #include <vector>
 
 class LaneModelView : public ModelViewWithPhongLighting
 {
 public:
-	LaneModelView();
+	LaneModelView(float cx, float cy, float cz); // coordinates for the center of the foul line
 	virtual ~LaneModelView();
 
 	void render();
@@ -22,6 +23,7 @@ private:
 	static vec3 black;
 
 	std::vector<Block*> blocks;
+	TenPinsModelView* pins;
 
 	vec3 position;
 };

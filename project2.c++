@@ -5,6 +5,7 @@
 #include "LaneModelView.h"
 #include "MandM.h"
 #include "TenPinsModelView.h"
+#include "GutterModelView.h"
 
 void set3DViewingInformation(double xyz[6])
 {
@@ -13,9 +14,9 @@ void set3DViewingInformation(double xyz[6])
 	double xmid = 0.5 * (xyz[0] + xyz[1]);
 	double ymid = 0.5 * (xyz[2] + xyz[3]);
 	double zmid = 0.5 * (xyz[4] + xyz[5]);
-	cryph::AffPoint center(19.5, 0, 30);
+	cryph::AffPoint center(0, 0, 300.0);
 
-	cryph::AffPoint eye(50.0, 20.0, -30.0);
+	cryph::AffPoint eye(25.0, 5.0, -10.0);
 
 	cryph::AffVector up = cryph::AffVector::yu;
 
@@ -36,10 +37,12 @@ int main(int argc, char* argv[])
 	GLFWController c("GIVE ME A NICE TITLE", MVC_USE_DEPTH_BIT);
 	c.reportVersions(std::cout);
 
+	GutterModelView::initBaseCoordinates();
+	GutterModelView::initNormals();
+
 	// create your scene, adding things to the Controller....
-	c.addModel(new LaneModelView());
-	c.addModel(new TenPinsModelView(19.5, 0.0, 30.0));
-	//c.addModel(new Block(19.5, 0.0, 30.0, 4.0, 15.0, 4.0));
+	c.addModel(new LaneModelView(0,0,0));
+	c.addModel(new GutterModelView(19.5 + 4.625, 1.0, 0));
 
 	glClearColor(0, 0, .6, 1.0);
 
