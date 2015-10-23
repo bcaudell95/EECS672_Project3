@@ -17,6 +17,7 @@ public:
 private:
 	const static vec3 size;
 	const static int numberOfBlocks;
+	static vec3 ka;
 	static vec3 laneColor;
 	static vec3 black;
 

@@ -36,13 +36,13 @@ uniform vec3 ambientIntensity = // "ia" ambient light intensity
 	vec3(1.0, 1.0, 1.0);	// default: white ambient light
 
 uniform vec3 ambientReflectivity = 		// "ka" - ambient reflectivity
-	vec3(0.1, 0.1, 0.1); // default: minimal ambient reflectivity
+	vec3(0.3, 0.3, 0.3); // default: minimal ambient reflectivity
 
 
 // There are also MANY ways to deal with light sources (number, type,
 // strength, etc.).  For now we simply assume one directional source.
 // You will generalize this in future projects.
-uniform vec4 p_ecLightSource = vec4(0, 1.0, 0, 0.0);
+uniform vec4 p_ecLightSource = vec4(.5, 1.0, 0, 0.0);
 
 // Per-vertex attributes
 // 1. incoming vertex position in model coordinates

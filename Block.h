@@ -20,6 +20,7 @@ public:
 	void render();
 
 	void setColor(vec3 c);
+	void setKa(vec3 c);
 protected:
 	void renderBlock();
 private:
@@ -30,6 +31,7 @@ private:
 	float xmin, xmax, ymin, ymax, zmin, zmax;
 
 	vec3 color;
+	vec3 ka;
 
 	static GLuint indexList[3][4];
 

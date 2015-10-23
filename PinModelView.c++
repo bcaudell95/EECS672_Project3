@@ -11,7 +11,7 @@ typedef float vec3[3];
 
 vec3 PinModelView::size = {4.78, 15.0, 4.78};
 vec3 PinModelView::baseCoordinates[1116];
-vec3 PinModelView::normals[1080];
+vec3 PinModelView::normals[1116];
 GLuint PinModelView::indexList[1080][4];
 float PinModelView::diameterByHeight[]
 	= {
@@ -51,17 +51,15 @@ void PinModelView::initBaseCoordinates()
 			for(int j=0;j<3;j++)
 				baseCoordinates[(36*ring)+i][j] = vertex[j];
 
-			if(ring < 30)
-			{
-				normal[0] = cos(M_PI * ((i+.5)/18.0));
-				normal[2] = sin(M_PI * ((i+.5)/18.0));
-				float alpha = atan(0.5/(radiusAtHeight(ring+1) - radiusAtHeight(ring)));
-				normal[1] = tan(M_PI/2 - alpha)*sqrt(normal[0]*normal[0] + normal[2]*normal[2]);
-				float mag = sqrt(normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2]);
+			normal[0] = cos(M_PI * ((i+.5)/18.0));
+			normal[2] = sin(M_PI * ((i+.5)/18.0));
+			float nYAbove = (ring == 30) ? 1 : atan(.5/(radiusAtHeight(ring+1)-radiusAtHeight(ring)));
+			float nYBelow = (ring == 0) ? 0 : atan(.5/(radiusAtHeight(ring)-radiusAtHeight(ring-1)));
+			normal[1] = .5*(nYAbove + nYBelow);
+			float mag = sqrt(normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2]);
 
-				for(int j=0;j<3;j++)
-					normals[(36*ring)+i][j] = -1*normal[j]/mag; // dividing by mag normalizes
-			}
+			for(int j=0;j<3;j++)
+				normals[(36*ring)+i][j] = -1*normal[j]/mag; // dividing by mag normalizes
 
 		}
 	}
@@ -128,11 +126,17 @@ void PinModelView::definePin()
 	glGenVertexArrays(1, vao);
 	glBindVertexArray(vao[0]);
 
-	glGenBuffers(1, vbo);
+	glGenBuffers(2, vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
 	glBufferData(GL_ARRAY_BUFFER, 1116*sizeof(vec3), vtx, GL_STATIC_DRAW);
 	glVertexAttribPointer(pvaLoc_mcPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(pvaLoc_mcPosition);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo[1]);
+	glBufferData(GL_ARRAY_BUFFER, 1116*sizeof(vec3), normals, GL_STATIC_DRAW);
+	glVertexAttribPointer(pvaLoc_mcNormal, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(pvaLoc_mcNormal);
+
 
 	glGenBuffers(1080, ebo);
 	for (int i=0 ; i<1080 ; i++)
@@ -141,7 +145,6 @@ void PinModelView::definePin()
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, 4*sizeof(GLuint), indexList[i], GL_STATIC_DRAW);
 	}
 
-	glDisableVertexAttribArray(pvaLoc_mcNormal);
 }
 
 PinModelView::~PinModelView()
@@ -186,17 +189,26 @@ void PinModelView::render()
 
 void PinModelView::renderPin()
 {
-	vec3 color = {1.0, 1.0, 1.0};
+
+	vec3 white = {1.0, 1.0, 1.0};
+	vec3 red = {1.0, 0, 0};
+	vec3 ka_white = {.4, .4, .4};
+	vec3 ka_red = {.4, 0, 0};
 
 	glBindVertexArray(vao[0]);
-	glUniform3fv(ppuLoc_kd, 1, color);
 
 	// draw 1080 faces using ebo's for vertex data
 	for(int i=0;i<1080;i++)
 	{
-		glVertexAttrib3f(pvaLoc_mcNormal, normals[i][0], normals[i][1], normals[i][2]);
+		glUniform3fv(ppuLoc_kd, 1, isFaceOnStripe(i) ? red : white);
+		glUniform3fv(ppuLoc_ambientReflectivity, 1, isFaceOnStripe(i) ? ka_red : ka_white);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
 		glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, NULL);
 	}
 
+}
+
+bool PinModelView::isFaceOnStripe(int face)
+{
+	return ((face>= (36*20) && face < (36*21)) || (face>= (36*22) && face < (36*23)));
 }

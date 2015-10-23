@@ -27,7 +27,7 @@ protected:
 
 private:
 	GLuint vao[1];
-	GLuint vbo[1];
+	GLuint vbo[2]; // first for coordinates, second for normal vector
 	GLuint ebo[1080];
 
 	vec3 origin;
@@ -38,8 +38,9 @@ private:
 	static vec3 size;
 	static float radiusAtHeight(float height);
 	static vec3 baseCoordinates[1116]; // 1116 points
-	static vec3 normals[1080];
+	static vec3 normals[1116];
 	static float diameterByHeight[];
+	static bool isFaceOnStripe(int face);
 
 };
 

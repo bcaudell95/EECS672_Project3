@@ -22,7 +22,10 @@ Block::Block(float cx, float cy, float cz, float lx, float ly, float lz) :
 	ymin = cy; ymax = cy + ly;
 	zmin = cz; zmax = cz + lz;
 	for(int i=0;i<3;i++)
+	{
 		color[i] = 0.0;
+		ka[i] = 0.1;
+	}
 	defineBlock();
 }
 
@@ -37,6 +40,12 @@ void Block::setColor(vec3 c)
 {
 	for(int i=0;i<3;i++)
 		color[i] = c[i];
+}
+
+void Block::setKa(vec3 c)
+{
+	for(int i=0;i<3;i++)
+		ka[i] = c[i];
 }
 
 void Block::defineBlock()
@@ -91,6 +100,7 @@ void Block::renderBlock()
 {
 	glBindVertexArray(vao[0]);
 	glUniform3fv(ppuLoc_kd, 1, color);
+	glUniform3fv(ppuLoc_ambientReflectivity, 1, ka);
 
 	// The three faces that can be drawn with glDrawArrays
 	glVertexAttrib3f(pvaLoc_mcNormal, 0.0, 0.0, 1.0);

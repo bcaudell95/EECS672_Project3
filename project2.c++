@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 	c.addModel(new PinModelView(19.5, 0.0, 30.0));
 	//c.addModel(new Block(19.5, 0.0, 30.0, 4.0, 15.0, 4.0));
 
-	glClearColor(.5, .5, .5, 1.0);
+	glClearColor(0, 0, .6, 1.0);
 
 	double xyz[6];
 
