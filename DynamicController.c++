@@ -3,8 +3,10 @@
 DynamicController::DynamicController(const std::string& windowTitle, int rcFlags)
 : GLFWController(windowTitle, rcFlags)
 {
-  glfwSetKeyCallback(theWindow, keyboardCB);
 
+  isLeftMouseButtonPressed = false;
+  lastMouseX = 0;
+  lastMouseY = 0;
 }
 DynamicController::~DynamicController() {
 
@@ -13,30 +15,43 @@ DynamicController::~DynamicController() {
 }
 
 
-void DynamicController::keyboardCB(GLFWwindow* window, int key, int scanCode, int action, int mods) {
-
-  if (curController != NULL)
-	{
-		DynamicController* theC = dynamic_cast<DynamicController*>(curController);
-		if (key == GLFW_KEY_P)
-			theC->sendCommandToModels('P', theC->lastPixelPosX, theC->lastPixelPosY);
-    else if (key == GLFW_KEY_O)
-			theC->sendCommandToModels('O', theC->lastPixelPosX, theC->lastPixelPosY);
-    else if (key == GLFW_KEY_Q)
-			theC->sendCommandToModels('Q', theC->lastPixelPosX, theC->lastPixelPosY);
-    GLFWController::keyboardCB(window, key, scanCode, action, mods);
-	}
-}
-
 void DynamicController::handleAsciiChar(unsigned char theChar, int x, int y)
 {
-
+  if (theChar=='p' || theChar=='q' || theChar=='o')
+  {
+    for(int i=0;i<getNumModels();i++)
+    {
+      getModel(i)->handleCommand(theChar, x, y);
+    }
+  }
 }
 
-void DynamicController::sendCommandToModels(unsigned char command, double x, double y)
+
+void DynamicController::handleMouseButton(MouseButton button, bool pressed, int x, int y, int mods)
 {
-  for(int i=0;i<getNumModels();i++)
+  isLeftMouseButtonPressed = (button == LEFT_BUTTON && pressed);
+  if (isLeftMouseButtonPressed)
   {
-    getModel(i)->handleCommand(command, x, y);
+    lastMouseX = x;
+    lastMouseY = y;
   }
+}
+
+void DynamicController::handleMouseMotion(int x, int y)
+{
+  if (isLeftMouseButtonPressed)
+  {
+    int dx = x - lastMouseX;
+    int dy = y - lastMouseY;
+    lastMouseX = x;
+    lastMouseY = y;
+
+    //TODO: apply rotation
+    ModelView::addToGlobalRotationDegrees(dx/3.0, dy/3.0, 0);
+  }
+}
+
+void DynamicController::handleScroll(bool up)
+{
+  ModelView::addToGlobalZoom(up ? -0.1 : 0.1);
 }

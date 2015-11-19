@@ -5,14 +5,13 @@
 
 void ModelView::addToGlobalRotationDegrees(double rx, double ry, double rz)
 {
-	std::cout << "For project 3, you must implement ModelView::addToGlobalRotationDegrees in ModelView_Additions.c++\n";
-	// TODO: 1. UPDATE dynamic_view
-	// TODO: 2. Use dynamic_view in ModelView::getMatrices
+	dynamic_view = cryph::Matrix4x4::xRotationDegrees(ry)*cryph::Matrix4x4::yRotationDegrees(rx)*dynamic_view;
 }
 
 void ModelView::addToGlobalZoom(double increment)
 {
-	dynamic_zoomScale += increment;
+	if (dynamic_zoomScale + increment > 0)
+		dynamic_zoomScale += increment;
 	// TODO: Project 3: Use dynamic_zoomScale in ModelView::getMatrices
 }
 
@@ -30,10 +29,10 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 
 	const double radius = 0.5*sqrt(dx*dx + dy*dy + dz*dz);
 
-	double ecXmin = -1.0 * radius;
-	double ecXmax = radius;
-	double ecYmin = -1.0 * radius;
-	double ecYmax = radius;
+	double ecXmin = -1.0 * radius * dynamic_zoomScale;
+	double ecXmax = radius * dynamic_zoomScale;
+	double ecYmin = -1.0 * radius * dynamic_zoomScale;
+	double ecYmax = radius * dynamic_zoomScale;
 
 	double vAR = Controller::getCurrentController()->getViewportAspectRatio();
 
@@ -45,4 +44,6 @@ void ModelView::getMatrices(cryph::Matrix4x4& mc_ec, cryph::Matrix4x4& ec_lds)
 		ec_lds = cryph::Matrix4x4::perspective(ecZpp, ecXmin, ecXmax, ecYmin, ecYmax, ecZmin, ecZmax);
 	else // Must be OBLIQUE
 		ec_lds = cryph::Matrix4x4::oblique(ecZpp, ecXmin, ecXmax, ecYmin, ecYmax, ecZmin, ecZmax, obliqueProjectionDir);
+
+		ec_lds = ec_lds*dynamic_view;
 }

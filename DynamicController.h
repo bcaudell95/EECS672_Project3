@@ -12,9 +12,13 @@ public:
 	virtual ~DynamicController();
 
 private:
-  static void keyboardCB(GLFWwindow* window, int key, int scanCode, int action, int mods);
-  virtual void handleAsciiChar(unsigned char theChar, int x, int y);
-	void sendCommandToModels(unsigned char command, double x, double y);
+	virtual void handleAsciiChar(unsigned char theChar, int x, int y);
+	virtual void handleMouseButton(MouseButton button, bool pressed, int x, int y, int mods);
+	virtual void handleMouseMotion(int x, int y);
+		virtual void handleScroll(bool up);
+
+	bool isLeftMouseButtonPressed;
+	int lastMouseX, lastMouseY;
 };
 
 #endif

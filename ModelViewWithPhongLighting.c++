@@ -70,11 +70,11 @@ void ModelViewWithPhongLighting::setShaderSources(const std::string& vShaderSrc,
 
 void ModelViewWithPhongLighting::handleCommand(unsigned char key, double ldsX, double ldsY)
 {
-	if (key=='P')
+	if (key=='p')
 	{
 		projType = PERSPECTIVE;
 	}
-	else if (key=='O')
+	else if (key=='o')
 	{
 		projType = ORTHOGONAL;
 	}
