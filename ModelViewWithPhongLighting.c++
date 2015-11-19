@@ -19,8 +19,10 @@ GLint ModelViewWithPhongLighting::ppuLoc_kd = -2;
 GLint ModelViewWithPhongLighting::ppuLoc_mc_ec = -2;
 GLint ModelViewWithPhongLighting::ppuLoc_ec_lds = -2;
 GLint ModelViewWithPhongLighting::ppuLoc_lightStrength = -2;
-GLint ModelViewWithPhongLighting::ppuLoc_ambientIntensity = -2;
-GLint ModelViewWithPhongLighting::ppuLoc_ambientReflectivity = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_isPositional = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_p_ecLightSource = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_ia = -2;
+GLint ModelViewWithPhongLighting::ppuLoc_ka = -2;
 
 std::string ModelViewWithPhongLighting::vShaderSource = "simple3d.vsh";
 std::string ModelViewWithPhongLighting::fShaderSource = "simple3d.fsh";
@@ -57,8 +59,10 @@ void ModelViewWithPhongLighting::fetchGLSLVariableLocations()
 		ppuLoc_mc_ec = ppUniformLocation(shaderProgram, "mc_ec");
 		ppuLoc_ec_lds = ppUniformLocation(shaderProgram, "ec_lds");
 		ppuLoc_lightStrength = ppUniformLocation(shaderProgram, "lightStrength");
-		ppuLoc_ambientIntensity = ppUniformLocation(shaderProgram, "ambientIntensity");
-		ppuLoc_ambientReflectivity = ppUniformLocation(shaderProgram, "ambientReflectivity");
+		ppuLoc_isPositional = ppUniformLocation(shaderProgram, "isPositional");
+		ppuLoc_p_ecLightSource = ppUniformLocation(shaderProgram, "p_ecLightSource");
+		ppuLoc_ia = ppUniformLocation(shaderProgram, "ia");
+		ppuLoc_ka = ppUniformLocation(shaderProgram, "ka");
 	}
 }
 

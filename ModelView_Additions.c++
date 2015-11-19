@@ -8,10 +8,9 @@ void ModelView::addToGlobalRotationDegrees(double rx, double ry, double rz)
 	dynamic_view = cryph::Matrix4x4::xRotationDegrees(ry)*cryph::Matrix4x4::yRotationDegrees(rx)*dynamic_view;
 }
 
-void ModelView::addToGlobalZoom(double increment)
+void ModelView::addToGlobalZoom(double factor)
 {
-	if (dynamic_zoomScale + increment > 0)
-		dynamic_zoomScale += increment;
+	dynamic_zoomScale = dynamic_zoomScale * factor;
 	// TODO: Project 3: Use dynamic_zoomScale in ModelView::getMatrices
 }
 

@@ -131,7 +131,7 @@ void GutterModelView::renderGutter()
 	glBindVertexArray(vao[0]);
 
 	glUniform3fv(ppuLoc_kd, 1, kd);
-	glUniform3fv(ppuLoc_ambientReflectivity, 1, ka);
+	glUniform3fv(ppuLoc_ka, 1, ka);
 
 	// draw 1080 faces using ebo's for vertex data
 	for(int i=0;i<17;i++)

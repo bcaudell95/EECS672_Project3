@@ -51,11 +51,13 @@ void PinModelView::initBaseCoordinates()
 			for(int j=0;j<3;j++)
 				baseCoordinates[(36*ring)+i][j] = vertex[j];
 
-			normal[0] = cos(M_PI * ((i+.5)/18.0));
-			normal[2] = sin(M_PI * ((i+.5)/18.0));
-			float nYAbove = (ring == 30) ? 1 : atan(.5/(radiusAtHeight(ring+1)-radiusAtHeight(ring)));
-			float nYBelow = (ring == 0) ? 0 : atan(.5/(radiusAtHeight(ring)-radiusAtHeight(ring-1)));
-			normal[1] = .5*(nYAbove + nYBelow);
+			normal[0] = -cos(M_PI * ((i+.5)/18.0));
+			normal[2] = -sin(M_PI * ((i+.5)/18.0));
+			float y = (ring==30 || ring==0) ? 0
+				: sin(atan(.5/(radiusAtHeight(ring+1)-radiusAtHeight(ring-1))));
+			float nYAbove = (ring == 30) ? 1 : sin(atan(.5/(radiusAtHeight(ring+1)-radiusAtHeight(ring))));
+			float nYBelow = (ring == 0) ? 0 : sin(atan(.5/(radiusAtHeight(ring)-radiusAtHeight(ring-1))));
+			normal[1] = y;
 			float mag = sqrt(normal[0]*normal[0] + normal[1]*normal[1] + normal[2]*normal[2]);
 
 			for(int j=0;j<3;j++)
@@ -201,7 +203,7 @@ void PinModelView::renderPin()
 	for(int i=0;i<1080;i++)
 	{
 		glUniform3fv(ppuLoc_kd, 1, isFaceOnStripe(i) ? red : white);
-		glUniform3fv(ppuLoc_ambientReflectivity, 1, isFaceOnStripe(i) ? ka_red : ka_white);
+		glUniform3fv(ppuLoc_ka, 1, isFaceOnStripe(i) ? ka_red : ka_white);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[i]);
 		glDrawElements(GL_TRIANGLE_STRIP, 4, GL_UNSIGNED_INT, NULL);
 	}

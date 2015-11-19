@@ -53,5 +53,5 @@ void DynamicController::handleMouseMotion(int x, int y)
 
 void DynamicController::handleScroll(bool up)
 {
-  ModelView::addToGlobalZoom(up ? -0.1 : 0.1);
+  ModelView::addToGlobalZoom(up ? .90 : 1.10);
 }

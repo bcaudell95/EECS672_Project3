@@ -31,11 +31,13 @@ protected:
 	static int numInstances;
 	static GLuint shaderProgram;
 	static GLint pvaLoc_mcPosition, pvaLoc_mcNormal;
-	static GLint ppuLoc_kd;
+	static GLint ppuLoc_kd,
+		ppuLoc_ka;
+	static GLint ppuLoc_ia;
 	static GLint ppuLoc_mc_ec, ppuLoc_ec_lds;
 	static GLint ppuLoc_lightStrength,
-		ppuLoc_ambientIntensity,
-		ppuLoc_ambientReflectivity;
+		ppuLoc_isPositional,
+		ppuLoc_p_ecLightSource;
 
 	static void fetchGLSLVariableLocations();
 

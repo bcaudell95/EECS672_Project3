@@ -24,25 +24,23 @@ uniform mat4 ec_lds = // (W-V map) * (projection matrix)
 	     0.0, 0.0, -1.0, 0.0,
 	     0.0, 0.0, 0.0, 1.0);
 
-// There are MANY ways to deal with the basic object color.
-// For now we will  simply assume:
 uniform vec3 kd = // "kd" - diffuse reflectivity; basic object color
 	vec3(1.0, 1.0, 1.0); // default: white
 
-uniform vec3 lightStrength = // "Li" - strength of the light source
-	vec3(1.0, 1.0, 1.0); //default: white light
+uniform vec3 ks = // "ks" - specular reflectivity
+	vec3(1.0, 1.0, 1.0); // default: white
 
-uniform vec3 ambientIntensity = // "ia" ambient light intensity
+uniform vec4 p_ecLightSource[] = vec4[1](vec4(0.0, 0.0, -1.0, 0.0));
+uniform vec3 lightStrength[] = // "Li" - strength of the light source
+	vec3[1](vec3(1.0, 1.0, 1.0)); //default: white light
+uniform bool isPositional[] = bool[1](false);
+
+uniform vec3 ia = // "ia" ambient light intensity
 	vec3(1.0, 1.0, 1.0);	// default: white ambient light
 
-uniform vec3 ambientReflectivity = 		// "ka" - ambient reflectivity
+uniform vec3 ka = 		// "ka" - ambient reflectivity
 	vec3(0.3, 0.3, 0.3); // default: minimal ambient reflectivity
 
-
-// There are also MANY ways to deal with light sources (number, type,
-// strength, etc.).  For now we simply assume one directional source.
-// You will generalize this in future projects.
-uniform vec4 p_ecLightSource = vec4(.5, 1.0, 0, 0.0);
 
 // Per-vertex attributes
 // 1. incoming vertex position in model coordinates
@@ -55,13 +53,41 @@ out vec3 colorToFS;
 vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 {
 
-	vec3 ambientPart = ambientReflectivity * ambientIntensity;
+	vec3 ambientPart = ka * ia;
+	vec3 iHat = vec3(0.0,0.0,0.0);
 	vec3 diffusePart = vec3(0.0, 0.0, 0.0);
-	float dot = dot(normalize(p_ecLightSource.xyz), ec_nHat);
-	if (dot > 0)
-		diffusePart = lightStrength * (kd * dot);
+	vec3 specularPart= vec3(0.0, 0.0, 0.0);
+	for(int i=0;i<p_ecLightSource.length();i++)
+	{
+		iHat = isPositional[i]
+		? normalize(p_ecLightSource[i].xyz - ec_Q)
+		: normalize(p_ecLightSource[i].xyz);
 
-	return ambientPart + diffusePart;
+		float diffuseDot = dot(iHat, ec_nHat);
+		if (diffuseDot > 0)
+			diffusePart = diffusePart + (lightStrength[i] * (kd * diffuseDot));
+
+		vec3 refDirHatPar = (ec_nHat, iHat)*ec_nHat;
+		vec3 refDirHatPerp = -1 * (iHat - refDirHatPar);
+		vec3 refDirHat = refDirHatPar + refDirHatPerp;
+		vec3 vHat = normalize(-1 * ec_Q); //temporary
+		int m = 20; // temporary
+
+		float specularDot = dot(refDirHat, vHat);
+		if (specularDot > 0)
+		{
+				specularPart = specularPart + (ks * pow(specularDot, m));
+		}
+	}
+
+	vec3 output = specularPart;
+	if (length(output)>1.0)
+	{
+		// adjusts vector by dividing by largest component
+		output = (1.0/max(output[0], max(output[1], output[2]))) * output;
+	}
+
+	return output;
 }
 
 void main ()

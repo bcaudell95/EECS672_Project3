@@ -6,7 +6,7 @@ LINK = g++ -fPIC -g
 LOCAL_UTIL_LIBRARIES = ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/libmvc.so
 OGL_LIBRARIES = -lglfw -lGLU -lGL
 
-OBJS = project3.o ModelViewWithPhongLighting.o SmallCappingModelView.o LaneModelView.o ModelView_Additions.o MandM.o Block.o PinModelView.o TenPinsModelView.o GutterModelView.o BigCappingModelView.o PairModelView.o DynamicController.o
+OBJS = project3.o ModelViewWithPhongLighting.o SmallCappingModelView.o LaneModelView.o ModelView_Additions.o Block.o PinModelView.o TenPinsModelView.o GutterModelView.o BigCappingModelView.o PairModelView.o DynamicController.o
 
 project3: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
 	$(LINK) -o project3 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
@@ -33,8 +33,6 @@ Block.o: Block.h Block.c++
 	$(CPP) $(C_FLAGS) Block.c++
 LaneModelView.o: LaneModelView.h LaneModelView.c++
 	$(CPP) $(C_FLAGS) LaneModelView.c++
-MandM.o: MandM.h MandM.c++
-	$(CPP) $(C_FLAGS) MandM.c++
 PinModelView.o: PinModelView.h PinModelView.c++
 	$(CPP) $(C_FLAGS) PinModelView.c++
 TenPinsModelView.o: TenPinsModelView.h TenPinsModelView.c++
