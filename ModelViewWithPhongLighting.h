@@ -12,6 +12,7 @@
 #include "ModelView.h"
 #include "ShaderIF.h"
 #include "Matrix4x4.h"
+#include "ProjectionType.h"
 
 typedef float vec3[3];
 
@@ -22,6 +23,7 @@ public:
 	virtual ~ModelViewWithPhongLighting();
 
 	static void setShaderSources(const std::string& vShader, const std::string& fShader);
+	virtual void handleCommand(unsigned char key, double ldsX, double ldsY);
 
 protected:
 
@@ -38,7 +40,7 @@ protected:
 	static void fetchGLSLVariableLocations();
 
 private:
-	static std::string vShaderSource, fShaderSource;
+	static std::string vShaderSource, fShaderSource;;
 };
 
 #endif

@@ -67,3 +67,19 @@ void ModelViewWithPhongLighting::setShaderSources(const std::string& vShaderSrc,
 	vShaderSource = vShaderSrc;
 	fShaderSource = fShaderSrc;
 }
+
+void ModelViewWithPhongLighting::handleCommand(unsigned char key, double ldsX, double ldsY)
+{
+	if (key=='P')
+	{
+		projType = PERSPECTIVE;
+	}
+	else if (key=='O')
+	{
+		projType = ORTHOGONAL;
+	}
+	else // Oblique
+	{
+		projType = OBLIQUE;
+	}
+}
