@@ -6,10 +6,10 @@ LINK = g++ -fPIC -g
 LOCAL_UTIL_LIBRARIES = ../lib/libcryph.so ../lib/libfont.so ../lib/libglsl.so ../lib/libmvc.so
 OGL_LIBRARIES = -lglfw -lGLU -lGL
 
-OBJS = project2.o ModelViewWithPhongLighting.o SmallCappingModelView.o LaneModelView.o ModelView_Additions.o MandM.o Block.o PinModelView.o TenPinsModelView.o GutterModelView.o BigCappingModelView.o PairModelView.o
+OBJS = project3.o ModelViewWithPhongLighting.o SmallCappingModelView.o LaneModelView.o ModelView_Additions.o MandM.o Block.o PinModelView.o TenPinsModelView.o GutterModelView.o BigCappingModelView.o PairModelView.o DynamicController.o
 
-project2: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
-	$(LINK) -o project2 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
+project3: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
+	$(LINK) -o project3 $(OBJS) $(LOCAL_UTIL_LIBRARIES) $(OGL_LIBRARIES)
 
 ../lib/libcryph.so: ../cryphutil/AffVector.h ../cryphutil/AffVector.c++ ../cryphutil/AffPoint.h ../cryphutil/AffPoint.c++
 	(cd ../cryphutil; make)
@@ -23,8 +23,8 @@ project2: $(OBJS) $(LOCAL_UTIL_LIBRARIES)
 ../lib/libmvc.so: ../mvcutil/Controller.h ../mvcutil/Controller.c++ ../mvcutil/ModelView.h ../mvcutil/ModelView.c++
 	(cd ../mvcutil; make)
 
-project2.o: project2.c++
-	$(CPP) $(C_FLAGS) project2.c++
+project3.o: project3.c++
+	$(CPP) $(C_FLAGS) project3.c++
 ModelView_Additions.o: ModelView_Additions.c++
 	$(CPP) $(C_FLAGS) ModelView_Additions.c++
 ModelViewWithPhongLighting.o: ModelViewWithPhongLighting.h ModelViewWithPhongLighting.c++
@@ -47,3 +47,5 @@ BigCappingModelView.o: BigCappingModelView.h BigCappingModelView.c++
 	$(CPP) $(C_FLAGS) BigCappingModelView.c++
 PairModelView.o: PairModelView.h PairModelView.c++
 	$(CPP) $(C_FLAGS) PairModelView.c++
+DynamicController.o : DynamicController.h DynamicController.c++
+	$(CPP) $(C_FLAGS) DynamicController.c++

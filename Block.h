@@ -1,4 +1,4 @@
-// Block.h
+// Block.h - taken from MandM example
 
 #ifndef BLOCK_H
 #define BLOCK_H

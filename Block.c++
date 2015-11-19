@@ -1,4 +1,4 @@
-// Block.c++
+// Block.c++ - taken from MandM example
 
 #include <iostream>
 #include <math.h>
