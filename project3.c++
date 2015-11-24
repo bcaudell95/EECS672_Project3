@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 	}
 	c.addModel(new PinModelView(-2.5*129.0, 50, -50));
 
-	glClearColor(0, 0, .6, 1.0);
+	glClearColor(0, 0, 0, 1.0);
 
 	double xyz[6];
 

@@ -17,10 +17,14 @@ uniform vec3 kd = // "kd" - diffuse reflectivity; basic object color
 uniform vec3 ks = // "ks" - specular reflectivity
 	vec3(0.5, 0.5, 0.5); // default: white
 
-uniform vec4 p_ecLightSource[] = vec4[1](vec4(100.0, 50.0, 100.0, 0.0));
+uniform vec4 p_ecLightSource[] = vec4[3](
+	vec4(100.0, 50.0, 100.0, 1.0),
+	vec4(-100.0, 50.0, 100.0, 1.0),
+	vec4(0.0, -1.0, -1.0, 0.0));
 uniform vec3 lightStrength[] = // "Li" - strength of the light source
-	vec3[1](vec3(1.0, 0.0, 0.0)); //default: white light
-uniform bool isPositional[] = bool[1](true);
+	vec3[3](vec3(1.0, 0.0, 0.0)
+					,vec3(0.0, 1.0, 0.0)
+					,vec3(0.0, 0.0, 1.0)); //default: white light
 
 uniform vec3 ia = // "ia" ambient light intensity
 	vec3(1.0, 1.0, 1.0);	// default: white ambient light
@@ -42,7 +46,7 @@ vec3 evaluateLightingModel(in vec3 ec_Q, in vec3 ec_nHat)
 	vec3 specularPart= vec3(0.0, 0.0, 0.0);
 	for(int i=0;i<p_ecLightSource.length();i++)
 	{
-		iHat = isPositional[i]
+		iHat = (p_ecLightSource[i].w == 1.0)
 		? normalize(p_ecLightSource[i].xyz - ec_Q)
 		: normalize(p_ecLightSource[i].xyz);
 
